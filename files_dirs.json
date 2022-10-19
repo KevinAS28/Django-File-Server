@@ -1,9 +1,11 @@
 {
     "files": [
-        "/home/kevin/file_server/manage.py"
+        "/home/kevin/file_server/manage.py",
+        "/home/kevin/nohup.out",
+	"/home/kevin/files/test.txt"
     ],
 
     "dirs": [
-        
+        "/home/kevin/file_server"
     ]
 }
