@@ -16,6 +16,10 @@ def download(request, filename):
                     response = HttpResponse(file_fd.read(), content_type='application/octet-stream')
                     response['Content-Disposition'] = 'inline; filename='+file
                     return response
+            else:
+                print(f'file {file_path} not match')
+        else:
+            print(f'file {file_path} not exist!')
 
     for dir_path in files_dirs['dirs']:
         if os.path.isdir(dir_path):
@@ -27,7 +31,13 @@ def download(request, filename):
                             with open(file_path, 'rb') as file_fd:
                                 response = HttpResponse(file_fd.read(), content_type='application/octet-stream')
                                 response['Content-Disposition'] = 'inline; filename='+file
-                                return response                    
+                                return response     
+                        else:
+                            print(f'file {file_path} not match!')
+                    else:
+                        print(f'file {file_path} not exist!')          
+        else:
+            print(f'dir {dir_path} not exist!')     
 
             
     return HttpResponseNotFound(f'file {filename} not exist!')
