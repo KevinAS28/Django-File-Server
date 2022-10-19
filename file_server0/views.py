@@ -4,10 +4,15 @@ from django.shortcuts import render
 from django.conf import settings
 
 
-files_dirs = json.load(open(os.path.join(settings.BASE_DIR, 'files_dirs.json')))
+files_dirs = None
+
+def refresh_fils_dirs():
+    global files_dirs
+    files_dirs = json.load(open(os.path.join(settings.BASE_DIR, 'files_dirs.json')))
 
 # Create your views here.
 def download(request, filename):
+    refresh_fils_dirs()
     print('requested file: ' + filename)
     for file_path in files_dirs['files']:
         file = os.path.basename(file_path)
@@ -45,3 +50,5 @@ def download(request, filename):
 
             
     return HttpResponseNotFound(f'file {filename} not exist!')
+
+refresh_fils_dirs()
