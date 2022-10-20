@@ -2,6 +2,9 @@ import json, os
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
 from django.conf import settings
+import mimetypes
+from django.http import StreamingHttpResponse
+from django.core.servers.basehttp import FileWrapper
 
 
 files_dirs = None
@@ -19,10 +22,16 @@ def download(request, filename):
         # if os.path.isfile(file):
         if True:
             if file==filename:
-                with open(file_path, 'rb') as file_fd:
-                    response = HttpResponse(file_fd.read(), content_type='application/octet-stream')
-                    response['Content-Disposition'] = 'inline; filename='+file
-                    return response
+                # with open(file_path, 'rb') as file_fd:
+                    # response = HttpResponse(file_fd.read(), content_type='application/octet-stream')
+                    # response['Content-Disposition'] = 'inline; filename='+file
+                    # return response
+                chunk_size = 8192
+                response = StreamingHttpResponse(FileWrapper(open(file_path, 'rb'), chunk_size),
+                                        content_type=mimetypes.guess_type(file_path)[0])
+                response['Content-Length'] = os.path.getsize(file_path)    
+                response['Content-Disposition'] = "attachment; filename=%s" % file
+                return response                    
             # else:
             #     print(f'file {file_path} not match')
         else:
@@ -37,10 +46,16 @@ def download(request, filename):
                     # if os.path.isfile(file):
                     if True:
                         if file==filename:
-                            with open(file_path, 'rb') as file_fd:
-                                response = HttpResponse(file_fd.read(), content_type='application/octet-stream')
-                                response['Content-Disposition'] = 'inline; filename='+file
-                                return response     
+                            # with open(file_path, 'rb') as file_fd:
+                            #     response = HttpResponse(file_fd.read(), content_type='application/octet-stream')
+                            #     response['Content-Disposition'] = 'inline; filename='+file
+                            #     return response     
+                            chunk_size = 8192
+                            response = StreamingHttpResponse(FileWrapper(open(file_path, 'rb'), chunk_size),
+                                                    content_type=mimetypes.guess_type(file_path)[0])
+                            response['Content-Length'] = os.path.getsize(file_path)    
+                            response['Content-Disposition'] = "attachment; filename=%s" % file
+                            return response                                                
                         # else:
                         #     print(f'file {file_path} not match!')
                     else:
