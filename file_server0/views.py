@@ -26,7 +26,7 @@ def download(request, filename):
                     # response = HttpResponse(file_fd.read(), content_type='application/octet-stream')
                     # response['Content-Disposition'] = 'inline; filename='+file
                     # return response
-                chunk_size = 8192*5
+                chunk_size = 8192*10
                 response = StreamingHttpResponse(FileWrapper(open(file_path, 'rb'), chunk_size),
                                         content_type=mimetypes.guess_type(file_path)[0])
                 response['Content-Length'] = os.path.getsize(file_path)    
@@ -50,7 +50,7 @@ def download(request, filename):
                             #     response = HttpResponse(file_fd.read(), content_type='application/octet-stream')
                             #     response['Content-Disposition'] = 'inline; filename='+file
                             #     return response     
-                            chunk_size = 8192*5
+                            chunk_size = 8192*10
                             response = StreamingHttpResponse(FileWrapper(open(file_path, 'rb'), chunk_size),
                                                     content_type=mimetypes.guess_type(file_path)[0])
                             response['Content-Length'] = os.path.getsize(file_path)    
@@ -63,7 +63,6 @@ def download(request, filename):
         # else:
         #     print(f'dir {dir_path} not exist!')     
 
-            
     return HttpResponseNotFound(f'file {filename} not exist!')
 
 refresh_fils_dirs()
