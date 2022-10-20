@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.conf import settings
 import mimetypes
 from django.http import StreamingHttpResponse
-from django.core.servers.basehttp import FileWrapper
+from wsgiref.util import FileWrapper
 
 
 files_dirs = None
